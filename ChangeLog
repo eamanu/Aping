@@ -1,0 +1,210 @@
+version 0.1 beta3 (x-x-2008)
+=========================================
+    *aping.py:
+    - Bug fixes in options parsing, several uncatched exceptions
+    - Additional checks in options parsing
+    - Corrections in output messages
+    - Modern timeout management
+    - -p/--packet changed into -c/--count
+    - fixed an ugly bug related to ping probes that used the same source and
+      destination IP, if no reply was gained program crashed, otherwise in 
+      reply's the sent packets with the received ones were displayed :(   
+    *default.py:
+    - Aping's version added in this file
+
+
+version 0.1 beta2 (29-08-2007)
+=========================================
+    *aping.py:
+    - Added a sonar option. If selected produces a short beep on every 
+      received packet
+      
+    - Changed the method to verify if the program was stopped in the listening 
+	   time and so removed the keyboardhalt variable from the packet sending loop
+
+
+version 0.1 beta1 (25-06-2007)
+=========================================
+    *default.py:
+    - changed the default extra data to 56 bytes instead of 0 bytes like before 
+    
+    *aping.py:
+    - Implemented a multithreading system. You can now see the statistics on the
+      fly. That means when APing is running you can press the enter to see the 
+      sent, received, lost packets the minimum, average, maximum round trip time
+      and the elapsed time.												    
+      
+    - fixed a bug in the statistics() method. If no packets was captured and the 
+      retransmission time exceeded the "No answer for the . . ." status message
+      was printed out
+
+    - Changed back the recvfrom() buffer to 2048 because that made wrong packet 
+      lengths to be printed to the stdout
+      
+    - fixed a buffer overflow, in the Python interpreter stack, that occurred 
+      when no packet was received and you specified a high retransmission value
+      greater then 985.  
+   
+    - fixed a bug that can occur in very rare cases. If you stopped the
+      program from the keyboard right before the tuple self.src_addr is 
+      converted to a string then in the statistics() method the "if self.src_addr
+      in ip_dst_address:" statement produced a TypeErro because you can not 
+      search for a tuple in a string 
+
+    - Changed the listening time to only accept option arguments in seconds, and
+      so removed the "ms" and "s" arguments too
+
+    - Removed from the send delay the 'm' and 's' time arguments. Now it's back
+      to the old style (eg 0.1 = 100 ms 120 = 2 min)  
+    
+    - fixed a bug that made an infinite listen time if no packet was captured 
+      and other instances of a ping like program was running on some other 
+      terminal
+
+    - some code enhancement
+     
+version 0.1 alpha4 (07-06-2007)
+=========================================
+    *header.py:
+    - Changed the header.py name to default.py (because this is python not C :))
+    
+    - Changed the default listening timeout from 1.5 to 2 seconds. This because
+      if there is heavy traffic at your side (downloading from torrents) the 
+      rtt times would be greater, compared when no other programs are using
+      your bandwidth   
+    
+    - Changed the default retransmission from 10 to 3   
+    
+    - Corrected some phrasing errors in comments
+    
+    *aping.py:
+	- fixed a bug that could occurred in very rare cases. (If you stopped APing
+	  after a received packet but before entering in the packet parser function
+	  the source address variable is a list, not string, but the target address 
+	  variable specified by the user is a string. In this case APing thought
+	  that the two variables are different, but in this case are the same)
+	 
+	- Changed the verbosity level range, now is from 0 to 2 (inclusive)
+	
+	- Implemented the --bind option and with this fixed a bug (finally) related
+	  to the localhost address. If you tried to probe your localhost (127.0.0.1)
+	  or your public IP, APing received a ICMP echo request (instead of a echo 
+	  reply, like usual), for the first sent packet, and then a ICMP echo reply
+	  ,(for the second sent request) an so an ... the problem was the same if 
+	  you probed your public IP. Now you can use --bind to bound the socket to
+	  another address (more info in the manual page) 
+	
+	- Implemented the --time option. If you use this with the timestamp request 
+	  probe type and valid timestamp replies are received APing gonna return the
+	  UTC times from that packets 
+	
+	- Implemented the --tos (Type of Service) option. Now you can set the ECN
+	  options and QoS priorities  
+	
+	- Created long options for the send delay (-w), and listening timeout (-o)
+	
+	- Completely changed, enhanced the checksum algorithm. (Based on the 
+	  function found in ping.c on FreeBSD)
+	
+	- Major modifications, enhancements in the main class (ICMPprobe), and
+	  cleaned enhanced the whole source code
+	
+	- Changed the rtt times in statistics to print out with a 3 digit precision
+	
+	- Changed the displayed total probe time in the statistics. Now if APing
+	  runs less then 59 or 59 seconds then the time is displayed in milliseconds
+	  and seconds if the total time is more than a minute then the time is 
+	  displayed in seconds and minutes   
+	
+	- Removed the last packet received send delay, so if you specify to send n 
+	  number of packets at the last received packet APing wont wait the send 
+	  delay time and then print out the statistics (that is a  wast of time), it
+	  would print out directly.
+	
+	- Removed the -a option. Now the target address is a non-option, like in
+	  ping or nmap case.
+	
+	- Moved the check for the root user privileges directly in the __init__ 
+	  function where the raw icmp packet is created. Reason: You can use SUID
+	  now to grant root privileges, with the old method even if you had SUID
+	  root you could't run the app. because APing checked the 0 number in the
+	  user id, (uid)field.
+	
+	- renamed the --print-opt to --print-options, and added all the option
+	  settings to print out before probing anything.  
+	
+	- Corrected, rewrote added more comments in the source and cleaned rewrote
+	  some message outputs.
+	
+	*aping.1(manual):
+	- Rewrote the manual page, corrected some phrasing errors. 
+
+
+version 0.1 alpha3 (06-04-2007)
+==========================================
+    *aping.py:
+    - implemented the random session ICMP identifier in packets, so now you can 
+      run APing simultaneously in several terminals without the timing problems
+      bug 
+    
+    - fixed a little bug in the IP number verifier function. (If you entered a 
+      negative numbers or some illegal characters (@,#,^. . . ) in one of the IP
+      fields APing still tried to probe the address)
+    
+    - Introduced the status message system. If on the probing process problems 
+      emerges then after the program stops (or it is halted from the keyboard) a
+      status message, or more are printed out related to that problem(s). If no 
+      problems occurs then the "All is ok" message is printed out
+    
+    - redesigned the --pkg-trace output, so it is more cleaner now (easy to 
+      read) not so messed up
+    
+    - Implemented the 's' and 'm' end options for the send delay and the listen 
+      timeout. Now the 2 timing options are expressed in milliseconds by default
+      If you want to specify manually you can append an 's' (for seconds) or an 
+      'm' (for minutes) after the number specified. If you don't append the end 
+      options after the number specified APing looks at the times like it were 
+      in milliseconds
+    
+    - fixed a bug in the checksum algorithm, that made the program to send bad 
+      checksum after a while and crash 
+    
+    - fixed a timing bug in the rtt of the received packages, if you entered a 
+      lower listen timeout then the target real rtt packets with bogus rtt was 
+      printed out to the screen. Now APing just ignores that packages
+    
+    - fixed a bug related to the run privileges. APing have used the os.getenv() 
+      function with the USER environment variable to retrieve the currently user
+      that try to run the program.But some distributions are not returning 
+      correctly the expected user that way. So I changed that function with the 
+      os.geteuid() that returns the user ID in any distribution 
+    
+    - fixed a major bug in the sequence number generator for the ICMP packets.
+      After APing sent 65535 packets the program crashes do to a bug in the 
+      sequence generator 
+    
+    - wrote more detailed infos in the program source about the classes, and 
+      functions, and what everyone do
+
+
+version 0.1 alpha2 (15-03-2007)
+==========================================
+    *aping.py:
+    - changed the trace option output
+    
+    - fixed a bug in the statistics function. (If the source address from the 
+      received packets was not the destination specified the warning message was
+      not printed out)
+    
+    - rewrote, corrected the error messages
+    
+    - fixed spelling mistakes in all the output messages
+    
+    - enhanced, corrected the help message
+    *aping.1(manual):
+    - corrected the manual page 
+
+
+version 0.1 alpha1 (25-02-2007)
+==========================================
+    The beginning . . .

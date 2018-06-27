@@ -1,0 +1,252 @@
+.TH APing "1" "June 2007" "APing 0.1 beta 2" "APing Reference Guide "
+.SH "NAME" 
+APing - sends multiple types of ICMP requests to network hosts (and many more)
+
+.SH "SYNOPSIS" 
+\fBaping.py\fR  {target address} [options]
+
+
+.SH "DESCRIPTION"
+.PP
+APing(Advanced Ping) is like the usual ping from GNU/Linux systems, but supports
+four types of ICMP probes, unlike ping which uses only ICMP echo requests. The 
+four types of ICMP probes are: echo request, address mask request, timestamp 
+request, and information request.
+.PP
+.SH "TARGET"
+.PP
+.IP "\fB\ {target address}" 4 
+.IX Item "{target address}"
+.PD      
+Specify the target address to ping. The {target address} can be a hostname like 
+my.host.com or any IPv4 address like 172.17.45.98
+
+.PP
+.SH "OPTIONS"
+.PP
+.IP "\fB\-P\fR \fI<type>\fR" 4
+.IX Item "-P <type>"
+.PD 0
+.IP "\fB\-\-Probe \fR\fI<type>\fR" 4
+.IX Item "--Probe <type>"
+.PD
+ICMP probe type to send (<type> can be p, t, m, i), where p is the usual ping echo 
+request probe, t is the timestamp request, m is the address mask request, and i 
+is the information request.
+
+.IP "\fB\-b\fR \fI<IP number>\fR" 4
+.IX Item "-b <IP number>"
+.PD 0
+.IP "\fB\-\-bind\fR \fI<IP number>\fR" 4
+.IX Item "--bind <IP number>"
+.PD
+Use this option to bind the created socket to an existing IP address on your 
+interface. The argument <IP number> must to be a valid IPv4 address. This option
+is useful in two cases: if you have multiple public IP's and you want to specify 
+yourself witch address to use to sending the packets, or if you probe your local
+address. In this case it's a good idea to bind the socket to another local IP.
+This fixes a problem, because if you are probing your localhost and the socket 
+is bonded to the same address it would receive one request, one reply packets 
+and so an, usually you must to receive only reply packets. DON'T try to bind the
+socket with a non existent address in your system! 
+
+.IP "\fB\-\-old\fR" 4
+.IX Item "--old"
+.PD
+Old style output. If you use this option the output to the stdout for 
+captured packets and the output of the statistics are exactly like in the 
+original ping program from 1983 by Mike Muuss.  
+
+.IP "\fB\-d\fR" 4
+.IX Item "-d"
+.PD 0
+.IP "\fB\-\-rdns \fR" 4
+.IX Item "--rdns"
+.PD
+Make reverse DNS resolution. Usually if you enter an IP address APing won't try
+to make the reverse DNS resolution, but if this option is included then APing 
+will attempt to make that. If you want to make faster probes don't include this
+option.
+
+.IP "\fB\-\-print-options\fR" 4
+.IX Item "--print-options"
+.PD 0
+Print out all the options (to the stdout) right at the beginning of the program,
+before sending any packets.You can use this to see clearly all the options
+configured with that probing session.
+
+.IP "\fB\-t\fR \fI<value>\fR" 4
+.IX Item "-t <value>"
+.PD 0
+.IP "\fB\-\-ttl\fR \fI<value>\fR" 4
+.IX Item "--ttl <value>"
+.PD
+Set up the time to live field.\fI<value>\fR is a number that is greater than 0 
+and less then 256. If you don't specify this option APing sets the default ttl 
+value that is 64.
+
+.IP "\fB\-s\fR \fI<bytes>\fR" 4
+.IX Item "-s <bytes>"
+.PD 0
+.IP "\fB\-\-size\fR \fI<bytes>\fR" 4
+.IX Item "--size <bytes>"
+.PD 
+Extra data in packets to send. The \fI<bytes>\fR argument is the number of extra
+bytes to send in the ICMP probes. You can specify this in decimal or hexadecimal
+format. The hexadecimal format takes 0x in the front and then the payload bytes
+to send. For example 0xff is equal to 255 in decimal. The default for APing is 
+that send no extra data in packets.
+
+.IP "\fB\-c\fR \fI<value>\fR" 4
+.IX Item "-c <value>"
+.PD 0
+.IP "\fB\-\-count\fR \fI<value>\fR" 4
+.IX Item "--count <value>"
+.PD
+Set the number of packets to send, then stop. The \fI<value>\fR argument is a 
+number that represents the packets. After APing have sent the number of packets
+specified it automatically stops.
+
+.IP "\fB\-w\fR \fI<time>\fR" 4
+.IX Item "-w <time>"
+.PD 0
+.IP "\fB\-\-send-delay\fR \fI<time>\fR" 4
+.IX Item "--send-delay <time>"
+.PD
+Adjust the send delay between probes. The \fI<time>\fR is a floating point or 
+integer specified in seconds. This controls the sleep() time after a packet is 
+sent and received (or not). If you don't use this option APing sets a 1 second 
+sleep time between probes.
+
+.IP "\fB\-o\fR \fI<time>\fR" 4
+.IX Item "-o <time>"
+.PD 0
+.IP "\fB\-\-listen\fR \fI<time>\fR" 4
+.IX Item "--listen <time>"
+.PD
+Set the listening timeout. The \fI<time>\fR argument represents the second to 
+listen. This option influences the recvfrom() function. If the listen time 
+expired 3 times consecutively the program is stopped (the default behavior). 
+This means usually that the target address doesn't respond to ping probes or 
+maybe is not running. Be very careful with this option. If you set a 
+lower timeout compared with the target's maximum rtt then you gonna get some 
+weird rtt responses. This is because APing will never wait long enough to 
+receive some of the replies, since it will transmit another request before the 
+target could generate a reply and if the target replies APing gonna capture that
+packet in the second or third, or higher (if is selected) retransmission. Hence,
+set this option with care!
+
+.IP "\fB\-r\fR \fI<value>\fR" 4
+.IX Item "-r <value>"
+.PD 0
+.IP "\fB\-\-retry\fR \fI<value>\fR" 4
+.IX Item "--retry <value>"
+.PD
+Set the probe's maximum number of retries if absolutely no reply is received.
+The \fI<value>\fR argument is an integer number that specifies the retry time if
+no packets are received consecutively.Note that this is for consecutive failed
+attempts; should APing receive a reply, the retry counter resets to zero. If 
+this option is set, the retry value is set to 10.
+
+.IP "\fB\-T\fR \fI<num>\fR" 4
+.IX Item "-T <num>"
+.PD 0
+.IP "\fB\-\-tos\fR \fI<num>\fR" 4
+.IX Item "--tos <num>"
+.PD
+Set up the TOS (Type of service) field in the IP header for the outgoing ICMP
+packets.The <num> argument can be specified like an integer between 0 and 255
+(inclusive), or like a hexadecimal value with the 0x prefix format. TOS values
+can be (in integers): 1 to set the ECN-CE bit (Explicit Congestion Notification, 
+Congestion Experienced) this means that the transport is ECN-capable, 2 to set 
+the ECT bit (ECN-Capable Transport) this means too that the transport is 
+ECN-capable, 3 to set the ECN with ECT this means that congestion was detected 
+on the wire, and from 4 to 255 are the DSCP (Differentiated Services 
+Codepoint) with the QoS (Quality of service) values
+.IP
+ ECT | ECN-CE |Integer form| Bit Combination Indicates 
+  0  |   0    |     0      | Not ECN-capable       
+  0  |   1    |     1      | ECN-capable           
+  1  |   0    |     2      | ECN-capable           
+  1  |   1    |     3      | Congestion experienced
+
+.IP "\fB\-\-time\fR" 4
+.IX Item "--time"
+.PD 0
+This option is used only with the timestamp requests. If a valid timestamp reply 
+is received from the target and this option is enabled it return's the UTC time
+in the timestamp packets. If not a valid timestamp reply is received APing 
+yields an error message and quits
+
+.IP "\fB\-\-pkg-trace\fR" 4
+.IX Item "--pkg-trace"
+.PD 0
+If this option is specified APing prints out all the packets sent and received.
+By default, this option is turned off and only replies are printed.
+
+.IP "\fB\-v\fR \fI<level>\fR" 4
+.IX Item "-v <level>"
+.PD 0
+.IP "\fB\-\-verbose\fR \fI<level>\fR" 4
+.IX Item "--verbose <level>"
+.PD
+Generate verbose output.\fI<level>\fR is a number between 1 and 3. This controls
+the verbosity level for the DNS resolver.
+
+.IP "\fB\-\-sonar\fR" 4
+.IX Item "--sonar"
+.PD 0
+Produces short beeps on every received packets. You must to have a speaker on 
+your mother board to hear the beeps. The name is from the sonar, sound 
+propagation that uses a submarine to locate things.   
+
+.IP "\fB\-V\fR" 4
+.IX Item "-V"
+.PD 0
+.IP "\fB\-\-Version\fR" 4
+.IX Item "--Version"
+.PD
+Print out the current version and exit.
+
+
+.IP "\fB\-h\fR" 4
+.IX Item "-h"
+.PD 0
+.IP "\fB\\fR" 4
+.IX Item ""
+.PD
+Print a help message describing all of APing's command-line options and exit.
+
+.SH "EXAMPLES"
+.PP
+.br 
+a simple probe with default options:
+.br
+aping.py www.google.com
+.PP
+or aping.py www.google.com -w0 is equivalent to ping www.google.com -A
+.PP
+Bind the socket to a local device/address:
+.br
+aping.py www.freebsd.org -b 67.3.22.19
+.PP
+Setting the ToS value to reflect a ECN-capable host:
+.br
+aping.py www.k3b.org -T 1 or aping.py www.k3b.org -T 2
+
+
+.SH "AUTHOR"
+.PP
+Written by Kantor A. Zsolt <kantorzsolt@yahoo.com>
+.br
+Manual page edited by Trey Blancher <trey@blancher.net>
+.SH "COPYRIGHT"
+.PP
+Copyright (c)  2007  Kantor A. Zsolt.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+Texts. A copy of the license is included in the section entitled "GNU
+Free Documentation License".
