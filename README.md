@@ -44,6 +44,10 @@ The author personal e-mail address: kantorzsolt@yahoo.com
 or
 The maintainer personal e-mail address: emmanuelarias30@gmail.com
 
+## TODO LIST
+
+Please, take a look at TODO.md file
+
 ## Contribution
 
 Please, read [CONTRIBUTE.md]() for contributions. 
