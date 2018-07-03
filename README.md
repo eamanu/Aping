@@ -50,6 +50,6 @@ Please, take a look at TODO.md file
 
 ## Contribution
 
-Please, read [CONTRIBUTE.md]() for contributions. 
+Please, read [CONTRIBUTING.md](https://github.com/eamanu/Aping/blob/master/CONTRIBUTING.md) for contributions. 
 
 Thanks!
