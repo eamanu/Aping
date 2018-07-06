@@ -6,9 +6,9 @@
 
 Aping (Advanced ping program) is a network ping utility written entirely in the Python programming language, which in addition to the standard ping program can execute four types of ICMP probes (pings): echo request (the standard ping), timestamp request, address mask request, and information request.
 
-Aping was initially written by Kantor A. Zsolt <kantorzsolt@yahoo.com>. This is a project that started on 2007. On 2018 was Overtaken and maintained by Emmanuel Arias <emmanuelarias30@gmail.com>
+Aping was initially written by Kantor A. Zsolt <kantorzsolt@yahoo.com>. This is a project that started in 2007. In 2018 was Overtaken and maintained by Emmanuel Arias <emmanuelarias30@gmail.com>
 
-The project homepage is: http://www.nongnu.org/Aping
+The project homepage is: http://www.nongnu.org/aping
 
 Development webpage is: https://savannah.nongnu.org/projects/Aping
 
