@@ -2,7 +2,7 @@
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Open Source Love png1](https://badges.frapsoft.com/os/v1/open-source.png?v=103)]()
-[![Generic badge](https://img.shields.io/badge/Version-0.1_Beta_3-green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Version-0.1_Beta_4-green.svg)](https://shields.io/)
 
 Aping (Advanced ping program) is a network ping utility written entirely in the Python programming language, which in addition to the standard ping program can execute four types of ICMP probes (pings): echo request (the standard ping), timestamp request, address mask request, and information request.
 

@@ -35,7 +35,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='Aping',
+    name='ApingTool',
     version='0.1b4',
     description='Advanced ping program',
     long_description=long_description,
