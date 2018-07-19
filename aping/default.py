@@ -70,6 +70,10 @@ sonar = ''
 SIOCGIFADDR = 0x00
 SIOCGIFCONF = 0x00
 
+# global variables
+bind_addr = ''
+dst_address = ''
+
 
 
 
