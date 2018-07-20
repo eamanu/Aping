@@ -34,7 +34,7 @@ a terminal.
 You can install aping doing:
     
     git clone https://github.com/eamanu/Aping/Aping.py
-    cd Aping.py
+    cd Aping
     python setup.py install
  
  or via pip:
