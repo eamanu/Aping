@@ -698,6 +698,25 @@ def checkaddr(addresses):
 def main():
     global bind_addr
     global dst_address
+    global print_opt
+    global verbose
+    global extra_data
+    global dst_port
+    global listen_timeout
+    global probe_type
+    global probe_time
+    global rev_dns
+    global send_delay
+    global time_to_live
+    global probes_retry
+    global pkg_trace
+    global ip_tos
+    global return_time
+    global old
+    global sonar
+    global SIOCGIFADDR
+    global SIOCGIFCONF
+
 
     # Option parser, check for valid options
     try:
@@ -708,7 +727,6 @@ def main():
     except getopt.GetoptError, bad_opt:
         sys.exit("\nAPing: %s \nTry -h or --help for a list of available options"\
                  % bad_opt)
-
 
     # create an empty list and store the options string expressions for the
     # duplicated options checking loop
@@ -929,8 +947,7 @@ def main():
     else:
         print 'APing : unsupported OS! Behavior may be unexpected!'
 
-    if bind_addr != '' or dst_address != '':
-    	printopt(map(checkaddr, [bind_addr, dst_address])[1])
+    printopt(map(checkaddr, [bind_addr, dst_address])[1])
 
 if __name__ == '__main__':
 	main()

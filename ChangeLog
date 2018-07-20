@@ -1,3 +1,14 @@
+version 0.1b4.post1 (19-07-2018)
+=========================================
+    * aping.py:
+    - Add main() function. This is necessary for make a console script with
+    setuptools
+    - change folder name aping to src
+    * setup.py
+    - Add console_scripts option
+    * default.py
+    - Change version to 0.1b4.post1
+
 version 0.1 beta4 (17-07-2018)
 =========================================
     * setup.py:

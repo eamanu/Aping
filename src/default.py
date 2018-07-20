@@ -24,7 +24,7 @@
 
 
 # APing Version
-VERSION = "0.1 beta 3"
+VERSION = "0.1b4.post1"
 
 # Here are defined the default options if no one is specified by the user
 
@@ -71,7 +71,6 @@ SIOCGIFADDR = 0x00
 SIOCGIFCONF = 0x00
 
 # global variables
-bind_addr = ''
 dst_address = ''
 
 
