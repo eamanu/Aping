@@ -668,8 +668,56 @@ Options:
         This help message""")
 
 
-# the idiom to invoking the application. All gonna start from here
-if __name__ == "__main__":
+def checkaddr(addresses):
+        isipv4 = 0
+        try:
+            int(addresses.replace('.', ''))
+
+            # check if target is specified in IP or hostname format
+            a, b, c, d = addresses.split('.')
+            for i in a, b, c, d:
+                i = int(i)
+                if i > 255 or i < 0:
+                    sys.exit("""\nAPing: Invalid IP address number range specified (%s)
+                    \rValid number range is between 0 and 255 (inclusive)"""\
+                             % addresses)
+            # Alert on broadcast pings, will be removed when Broadcasting will be implemented
+            if '255' in [a, b, c, d]:
+                print """\nWarning : Broadcast not implemented yet in APing
+                \rBehaviour might be uncertain"""
+            # ------------------ #
+            isipv4 = 1
+        except ValueError, error_msg:
+            if "need" in str(error_msg) or "many" in str(error_msg):
+                sys.exit("""\nAPing: Invalid IP address length specified (%s)
+                \rThe address must to be a valid IPv4 address"""\
+                         % addresses)
+        return isipv4
+
+
+def main():
+    global bind_addr
+    global dst_address
+    global print_opt
+    global verbose
+    global extra_data
+    global dst_port
+    global listen_timeout
+    global probe_type
+    global probe_time
+    global rev_dns
+    global send_delay
+    global time_to_live
+    global probes_retry
+    global pkg_trace
+    global ip_tos
+    global return_time
+    global old
+    global sonar
+    global SIOCGIFADDR
+    global SIOCGIFCONF
+
+
     # Option parser, check for valid options
     try:
         valid_options = getopt.gnu_getopt(sys.argv[1:], "Vt:r:w:c:o:v:s:P:hdT:b:",\
@@ -679,7 +727,6 @@ if __name__ == "__main__":
     except getopt.GetoptError, bad_opt:
         sys.exit("\nAPing: %s \nTry -h or --help for a list of available options"\
                  % bad_opt)
-
 
     # create an empty list and store the options string expressions for the
     # duplicated options checking loop
@@ -900,30 +947,7 @@ if __name__ == "__main__":
     else:
         print 'APing : unsupported OS! Behavior may be unexpected!'
 
-    def checkaddr(addresses):
-        isipv4 = 0
-        try:
-            int(addresses.replace('.', ''))
-
-            # check if target is specified in IP or hostname format
-            a, b, c, d = addresses.split('.')
-            for i in a, b, c, d:
-                i = int(i)
-                if i > 255 or i < 0:
-                    sys.exit("""\nAPing: Invalid IP address number range specified (%s)
-                    \rValid number range is between 0 and 255 (inclusive)"""\
-                             % addresses)
-            # Alert on broadcast pings, will be removed when Broadcasting will be implemented
-            if '255' in [a, b, c, d]:
-                print """\nWarning : Broadcast not implemented yet in APing
-                \rBehaviour might be uncertain"""
-            # ------------------ #
-            isipv4 = 1
-        except ValueError, error_msg:
-            if "need" in str(error_msg) or "many" in str(error_msg):
-                sys.exit("""\nAPing: Invalid IP address length specified (%s)
-                \rThe address must to be a valid IPv4 address"""\
-                         % addresses)
-        return isipv4
-
     printopt(map(checkaddr, [bind_addr, dst_address])[1])
+
+if __name__ == '__main__':
+	main()

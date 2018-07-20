@@ -36,7 +36,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='ApingTool',
-    version='0.1b4',
+    version='0.1b4.post1',
     description='Advanced ping program',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -51,6 +51,11 @@ setup(
     ],
     keywords='network tool development ping',
     packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'aping=src.aping:main'
+        ]
+    },    
     project_urls={
         'Bug Reports': 'https://github.com/eamanu/Aping/issues',
         'Source': 'https://github.com/eamanu/Aping',
