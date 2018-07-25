@@ -53,7 +53,7 @@ type: man ./Aping.1 to see a more detailed description of the options
 
 If you install Aping via pip or setup.py you can just run:
 
-    sudo ping aping 8.8.8.8
+    sudo aping 8.8.8.8
 
 ## CONTACT:   
 
